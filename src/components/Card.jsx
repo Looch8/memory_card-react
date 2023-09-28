@@ -15,7 +15,7 @@ function Card({ card }) {
 			{isFlipped ? (
 				<img src={card.imageUrl} alt="Card" />
 			) : (
-				<div className="card-back">Click me!</div>
+				<div className="card-back">Back of card.</div>
 			)}
 		</div>
 	);
