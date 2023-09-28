@@ -1,5 +1,11 @@
+import CardGrid from "./components/CardGrid";
+
 function App() {
-	return <></>;
+	return (
+		<>
+			<CardGrid />{" "}
+		</>
+	);
 }
 
 export default App;
