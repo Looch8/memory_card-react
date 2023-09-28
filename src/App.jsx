@@ -1,9 +1,10 @@
+import Card from "./components/Card";
 import CardGrid from "./components/CardGrid";
 
 function App() {
 	return (
 		<>
-			<CardGrid />{" "}
+			<CardGrid /> <Card />
 		</>
 	);
 }
