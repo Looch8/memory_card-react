@@ -22,13 +22,12 @@ function App() {
 			const data = await response.json();
 
 			const cartoonCards = [];
-			let fetchedCount = 0;
 
-			while (fetchedCount < 4 && data.length > 0) {
+			while (cartoonCards.length < 4 && data.length > 0) {
 				const randomIndex = Math.floor(Math.random() * data.length);
-				const cartoon = data.splice(randomIndex, 1)[0];
+				const cartoon = data[randomIndex];
 
-				if (cartoon) {
+				try {
 					// Check if the image is not forbidden (403 status)
 					const imageResponse = await fetch(cartoon.image);
 					if (imageResponse.ok) {
@@ -36,9 +35,15 @@ function App() {
 							id: cartoon.id,
 							imageUrl: cartoon.image,
 						});
-						fetchedCount++;
+					} else {
+						console.log(`Forbidden image: ${cartoon.image}`);
 					}
+				} catch (error) {
+					console.error(`Error checking image: ${cartoon.image}`);
 				}
+
+				// Remove the cartoon from the data array
+				data.splice(randomIndex, 1);
 			}
 
 			// Shuffle the cartoon cards
