@@ -9,6 +9,7 @@ function App() {
 	const [cards, setCards] = useState(initialCards); // Array of cards
 	const [currentScore, setCurrentScore] = useState(0); // Keeping track of the score
 	const [bestScore, setBestScore] = useState(0);
+	const [isAllFlipped, setIsAllFlipped] = useState(false); // Check if all cards are flipped
 
 	// Function to fetch random cartoon images
 	const fetchRandomCartoon = async () => {
@@ -34,6 +35,7 @@ function App() {
 						cartoonCards.push({
 							id: cartoon.id,
 							imageUrl: cartoon.image,
+							isFlipped: false, // Initially, all cards are not flipped
 						});
 					} else {
 						console.log(`Forbidden image: ${cartoon.image}`);
@@ -74,6 +76,18 @@ function App() {
 		fetchRandomCartoon();
 	}, []);
 
+	// Function to handle card click
+	const handleCardClick = () => {
+		// Toggle the isFlipped state of all cards
+		const updatedCards = cards.map((card) => ({
+			...card,
+			isFlipped: !isAllFlipped,
+		}));
+
+		setCards(updatedCards);
+		setIsAllFlipped(!isAllFlipped);
+	};
+
 	// Determine when cards are matched
 
 	return (
@@ -84,7 +98,11 @@ function App() {
 				<p>Current Score: {currentScore}</p>
 				<p>Best Score: {bestScore}</p>
 			</div>
-			<CardGrid cards={cards} />
+			<CardGrid
+				cards={cards}
+				onCardClick={handleCardClick}
+				isAllFlipped={isAllFlipped}
+			/>
 		</div>
 	);
 }

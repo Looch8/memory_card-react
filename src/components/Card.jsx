@@ -1,22 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function Card({ card }) {
-	const [isFlipped, setIsFlipped] = useState(true);
+function Card({ card, onCardClick, isAllFlipped }) {
+	const [isFlipped, setIsFlipped] = useState(true); // Initially, all cards face up
+
+	useEffect(() => {
+		setIsFlipped(isAllFlipped);
+	}, [isAllFlipped]);
 
 	const handleClick = () => {
-		setIsFlipped(!isFlipped);
+		if (!isAllFlipped) {
+			setIsFlipped(!isFlipped);
+			onCardClick(card.id);
+		}
 	};
+
+	console.log(`Card ${card.id} - isFlipped: ${isFlipped}`);
 
 	return (
 		<div
-			className={`card ${isFlipped ? "flipped" : ""}`}
+			className={`card ${isFlipped ? "" : "flipped"}`} // Reversed class names
 			onClick={handleClick}
 		>
-			{/* Use a conditional to render the front or back of the card */}
 			{isFlipped ? (
-				<img src={card.imageUrl} alt={`Cartoon ${card.id}`} />
-			) : (
 				<img src="/path_to_card_back_image.jpg" alt={`Card Back`} />
+			) : (
+				<img src={card.imageUrl} alt={`Cartoon ${card.id}`} />
 			)}
 		</div>
 	);
