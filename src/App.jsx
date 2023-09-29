@@ -30,7 +30,7 @@ function App() {
 
 				if (cartoon) {
 					// Check if the image is not forbidden (403 status)
-					const imageResponse = await fetch(cartoon.imageUrl);
+					const imageResponse = await fetch(cartoon.image);
 					if (imageResponse.ok) {
 						cartoonCards.push({
 							id: cartoon.id,
