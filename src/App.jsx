@@ -51,7 +51,7 @@ function App() {
 		}
 	};
 
-	// Function to shuffle an array (Fisher-Yates shuffle algorithm)
+	// Function to shuffle an array
 	const shuffleArray = (array) => {
 		const shuffledArray = [...array];
 		for (let i = shuffledArray.length - 1; i > 0; i--) {
