@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Card from "./components/Card";
 import CardGrid from "./components/CardGrid";
+import Header from "./components/Header";
 
 function App() {
 	// Define initialCards with some initial data or remove it if fetching dynamically
@@ -93,11 +94,7 @@ function App() {
 	return (
 		<div className="App">
 			{/* Render game components */}
-			<h1>Cartoon Memory Card Game</h1>
-			<div>
-				<p>Current Score: {currentScore}</p>
-				<p>Best Score: {bestScore}</p>
-			</div>
+			<Header currentScore={currentScore} bestScore={bestScore} />
 			<CardGrid
 				cards={cards}
 				onCardClick={handleCardClick}
