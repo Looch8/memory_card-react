@@ -1,30 +1,21 @@
-import { useState, useEffect } from "react";
-
 function Card({ card, onCardClick, isAllFlipped }) {
-	const [isFlipped, setIsFlipped] = useState(true); // Initially, all cards face up
-
-	useEffect(() => {
-		setIsFlipped(isAllFlipped);
-	}, [isAllFlipped]);
-
 	const handleClick = () => {
 		if (!isAllFlipped) {
-			setIsFlipped(!isFlipped);
 			onCardClick(card.id);
 		}
 	};
 
-	console.log(`Card ${card.id} - isFlipped: ${isFlipped}`);
+	console.log(`Card ${card.id} - isFlipped: ${isAllFlipped}`);
 
 	return (
 		<div
-			className={`card ${isFlipped ? "" : "flipped"}`} // Reversed class names
+			className={`card ${isAllFlipped ? "flipped" : ""}`}
 			onClick={handleClick}
 		>
-			{isFlipped ? (
-				<img src="/path_to_card_back_image.jpg" alt={`Card Back`} />
+			{isAllFlipped ? (
+				<img src="/path_to_back_of_card_image" alt={"card back"} />
 			) : (
-				<img src={card.imageUrl} alt={`Cartoon ${card.id}`} />
+				<img src={card.imageUrl} alt={card.id} />
 			)}
 		</div>
 	);
