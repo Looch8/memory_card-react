@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import CardGrid from "./CardGrid";
 import { fetchRandomCartoon, shuffleArray } from "./utils";
-import Scoreboard from "./Scoreboard"; // Import the Scoreboard component
+import Scoreboard from "./Scoreboard";
 
 function CardImages() {
 	const [cards, setCards] = useState([]);
@@ -9,6 +9,7 @@ function CardImages() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [clickedCards, setClickedCards] = useState([]);
 	const [lossMessageVisible, setLossMessageVisible] = useState(false);
+	const [isGameOver, setIsGameOver] = useState(false); // New state for game over
 
 	const [currentScore, setCurrentScore] = useState(0);
 	const [highScore, setHighScore] = useState(0);
@@ -28,9 +29,10 @@ function CardImages() {
 	}, []); // Empty dependency array to ensure it runs only once
 
 	const handleCardClick = (cardId) => {
-		if (!isAllFlipped) {
+		if (!isAllFlipped && !isGameOver) {
 			if (clickedCards.includes(cardId)) {
 				setLossMessageVisible(true);
+				setIsGameOver(true); // Set game over state
 				if (currentScore >= highScore) {
 					setHighScore(currentScore);
 				}
@@ -57,7 +59,7 @@ function CardImages() {
 
 					setCards(updatedCards);
 					setIsAllFlipped(false);
-				}, 2000);
+				}, 1000);
 			}
 		}
 	};
@@ -67,6 +69,7 @@ function CardImages() {
 		setClickedCards([]);
 		setIsAllFlipped(false);
 		setLossMessageVisible(false);
+		setIsGameOver(false); // Reset game over state
 	};
 
 	return (
@@ -83,7 +86,7 @@ function CardImages() {
 					{lossMessageVisible && (
 						<div className="loss-message">
 							<p>Game over!</p>
-							<button onClick={resetGame}>Close</button>
+							<button onClick={resetGame}>Restart</button>
 						</div>
 					)}
 					<CardGrid

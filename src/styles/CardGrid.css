@@ -1,0 +1,25 @@
+/* Style the card container */
+.card-grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	flex-direction: row;
+}
+
+/* Style the individual cards */
+.card {
+	width: 200px;
+	height: 200px;
+	border: 1px solid #ccc;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Style the card image */
+.card img {
+	max-width: 100%;
+	max-height: 100%;
+}
