@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
-import Header from "./Header";
 import CardGrid from "./CardGrid";
 import { fetchRandomCartoon, shuffleArray } from "./utils";
+import Scoreboard from "./Scoreboard"; // Import the Scoreboard component
 
 function CardImages() {
 	const [cards, setCards] = useState([]);
-	const [currentScore, setCurrentScore] = useState(0);
-	const [bestScore, setBestScore] = useState(0);
 	const [isAllFlipped, setIsAllFlipped] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
-	const [clickedCards, setClickedCards] = useState([]); // Store clicked card IDs
+	const [clickedCards, setClickedCards] = useState([]);
 	const [lossMessageVisible, setLossMessageVisible] = useState(false);
+
+	const [currentScore, setCurrentScore] = useState(0);
+	const [highScore, setHighScore] = useState(0);
 
 	useEffect(() => {
 		// Fetch random cartoon images when the component mounts
@@ -28,23 +29,22 @@ function CardImages() {
 
 	const handleCardClick = (cardId) => {
 		if (!isAllFlipped) {
-			// Check if the card has been clicked before
 			if (clickedCards.includes(cardId)) {
-				// Display loss message
 				setLossMessageVisible(true);
+				if (currentScore >= highScore) {
+					setHighScore(currentScore);
+				}
 			} else {
-				// Update the clicked cards
 				const updatedClickedCards = [...clickedCards, cardId];
 				setClickedCards(updatedClickedCards);
+				setCurrentScore(currentScore + 1);
 
-				// Flip the card back after a delay (2-3 seconds)
 				setTimeout(() => {
 					const updatedCards = cards.map((card) => ({
 						...card,
 						isFlipped: false,
 					}));
 
-					// Fetch new random cards and shuffle
 					fetchRandomCartoon()
 						.then((newCartoonCards) => {
 							const shuffledNewCards =
@@ -57,31 +57,33 @@ function CardImages() {
 
 					setCards(updatedCards);
 					setIsAllFlipped(false);
-				}, 1000); // Adjust the delay time as needed
+				}, 2000);
 			}
 		}
 	};
 
-	const closeLossMessage = () => {
-		// Reset game state and close the loss message
-		setLossMessageVisible(false);
-		setClickedCards([]);
+	const resetGame = () => {
 		setCurrentScore(0);
+		setClickedCards([]);
 		setIsAllFlipped(false);
+		setLossMessageVisible(false);
 	};
 
-	// Render the cards and loss message
 	return (
 		<div className="App">
-			<Header currentScore={currentScore} bestScore={bestScore} />
+			<Scoreboard
+				currentScore={currentScore}
+				highScore={highScore}
+				resetGame={resetGame}
+			/>
 			{isLoading ? (
 				<div>Loading...</div>
 			) : (
 				<>
 					{lossMessageVisible && (
 						<div className="loss-message">
-							<p>You lose!</p>
-							<button onClick={closeLossMessage}>Close</button>
+							<p>Game over!</p>
+							<button onClick={resetGame}>Close</button>
 						</div>
 					)}
 					<CardGrid
